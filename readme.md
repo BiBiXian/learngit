@@ -22,3 +22,8 @@
 
   3. 使用git命令 git commit -m <message> 把文件提交到仓库 (message的内容是你执行的欣慰可以是中文)
     git commit -m "wrote a readme file"
+
+# 查看仓库当前的状态 git status
+  git status 可以查看那些文件发生了改变，但是如果你想查看具体修改了什么内容可以使用git diff指令
+# 查看具体修改什么内容 git diff
+  
