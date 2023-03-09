@@ -4,7 +4,7 @@
     git config --global user.name 你的名字
     git config --global user.email 你的邮箱
 
-# 创建本地创库
+# 创建本地仓库
   1.创建一个文件夹（例：learngit），并在命令行中使用指令访问该文件夹
     cd learngit
   2.通过git 命令把这个文件目录变成Git仓库
@@ -26,4 +26,34 @@
 # 查看仓库当前的状态 git status
   git status 可以查看那些文件发生了改变，但是如果你想查看具体修改了什么内容可以使用git diff指令
 # 查看具体修改什么内容 git diff
-  
+
+# 删除文件
+    当在工作区删除了文件，导致工作区和版本库不一致了
+    1.那就用命令git rm <file> 或 （git add <file>/git add -u/ git add -A）将删除操作添加至暂存区，并且使用git commit提交到版本仓库：
+    git rm a.js ：从暂存区中删除a.js该文件
+    git commit -m "delete a.js"  提交至仓库
+
+    2.另一种情况是删错了，放弃工作目录中的更改：
+        git checkout -- a.js   这样在工作区删除的a.js文件就会恢复  (旧版本命令)
+        git restore a.js  同样效果 (新版本命令)
+注意：
+git checkout -- <file>命令中的 -- 很重要，没有–，就变成了 切换到另一个分支 的命令，我们在后面的分支管理中会再次讲解git checkout命令。
+在git 2.23.0 中引入了两个新的命令 switch （切换分支）和 restore（撤销修改） 用来取代checkout
+
+
+# 撤销添加到暂存区操作
+       git reset HEAD <file>
+       git restore --staged <file>  新版本 
+可以把暂存区的修改撤销掉，重新放回工作区：
+
+# 回退版本
+    git log 指令，可以查看用户在当前仓库中所有commit提交日志
+    git log --pretty=oneline  让log日志一行输出
+    git reset --hard HEAD^ 使用版本回退时Git必须要知道回退到那个版本，其中HEAD表示当前版本,HEAD^表示上一个版本,HEAD^^表示上上一个版本以此类推。
+    git reset  --hard HEAD~10 如果要回退的版本较早，使用HEAD^的方法比较繁琐可以使用HEAD~数字方法回退  回退到当前版本前第十个版本
+    git reset --hard sdff2 Git可以通过指定版本号，回退到指定版本。使用指定版本号回退版本时无需将版本号写完整，写前几位能跟其他版本号区分开就可以
+    如果在开发中如果开发人员不小心回退版本多了，可以使用
+    git reflog指令查看所有操作记录，并查找到想到的版本号，通过reset方法回到指定版本
+
+# 分支管理
+    
