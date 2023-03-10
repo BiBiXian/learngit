@@ -70,3 +70,94 @@ git checkout -- <file>命令中的 -- 很重要，没有–，就变成了 切�
 dev分支的工作完成，我们就可以切换回master分支：git switch  master
 使用merge把dev分支的工作成果合并到master分支上： git merge dev
 合并完分支后，甚至可以删除dev分支： git branch -d dev
+
+# 解决冲突 没有新的命令
+
+使用Github
+介绍：Github是一个基于git的代码托管平台，付费用户可以建私人仓库，我们一般的免费用户只能使用公共仓库。只要注册一个GitHub账号，就可以免费获得Git远程仓库。目前GitHub已是：
+
+一个拥有143万开发者的社区。其中不乏Linux发明者Torvalds这样的顶级黑客，以及Rails创始人DHH这样的年轻极客。
+这个星球上最流行的开源托管服务。目前已托管431万git项目，不仅越来越多知名开源项目迁入GitHub，比如Ruby on Rails、jQuery、Ruby、Erlang/OTP；近三年流行的开源库往往在GitHub首发，例如：BootStrap、Node.js、CoffeScript等。
+alexa全球排名414的网站。
+注册账户以及创建仓库
+注册：要想使用github第一步当然是注册github账号了， github官网地址。
+
+配置：
+
+首先在本地创建ssh key；
+$ ssh-keygen -t rsa -C "your_email@youremail.com"
+
+
+
+后面的your_email@youremail.com改为你在github上注册的邮箱，之后会要求确认路径和输入密码，我们这使用默认的一路回车就行。
+成功后可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，id_rsa是SSH Key的私钥，不能泄露出去，id_rsa.pub是SSH Key的公钥，可以放心地告诉任何人。
+
+登陆GitHub，进入 Account Settings（账户配置），左边选择SSH Keys，Add SSH Key,title随便填，在Key文本框里粘贴id_rsa.pub文件的内容。
+点“Add Key”，你就将Key添加到项目中了：
+配置ssh
+给GitHub账户上配置SSH Key的作用是，让GitHub识别出推送的提交是你设置SSH key设备推送的，而不是别人冒充的，而Git支持SSH协议，所以，GitHub只要知道了你的公钥，就可以确认只有指定设备才能推送。
+
+创建仓库：
+
+登陆GitHub，在页面上找到“Create a new repo”按钮，创建一个新的仓库：
+Inked创建项目_LI.jpg
+在Repository name填入仓库名字，其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库：
+空项目.png
+在GitHub上的这个learngit仓库还是空的，GitHub告诉我们，可以从这个仓库克隆出新的仓库，也可以把一个已有的本地仓库与之关联，然后，把本地仓库的内容推送到GitHub仓库。
+我们根据GitHub的提示，在本地的learngit仓库下运行命令：
+git remote add origin git@github.com:username/仓库地址.git
+
+
+
+注意：请将上面的 github.com:username/仓库地址.git url替换成你自己的仓库地址
+
+添加后，远程库的名字就是origin，这是Git默认的叫法，也可以改成别的。
+
+下一步，使用git push命令把本地库的内容推送到远程，实际上是把本地分支推送到远程分支。
+git push -u origin 本地分支名:远程分支名
+
+Counting objects: 20, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (15/15), done.
+Writing objects: 100% (20/20), 1.64 KiB | 560.00 KiB/s, done.
+Total 20 (delta 5), reused 0 (delta 0)
+remote: Resolving deltas: 100% (5/5), done.
+To github.com:github.com:username/仓库地址.git
+ * [new branch]      master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+
+
+从现在起，只要本地作了提交，就可以通过命令把本地master分支的最新修改推送至GitHub，
+git push origin 本地分支名:远程分支名
+
+
+注意：若本地分支名与远程分支名相同可以git push origin 分支名
+
+SSH警告
+当你第一次使用Git的clone或者push命令连接GitHub时，会得到一个警告：
+
+The authenticity of host 'github.com (xx.xx.xx.xx)' can't be established.
+RSA key fingerprint is xx.xx.xx.xx.xx.
+Are you sure you want to continue connecting (yes/no)?
+
+
+这是因为Git使用SSH连接，而SSH连接在第一次验证GitHub服务器的Key时，需要你确认GitHub的Key的指纹信息是否真的来自GitHub的服务器，输入yes回车即可。
+
+Git会输出一个警告，告诉你已经把GitHub的Key添加到本机的一个信任列表里了：
+
+Warning: Permanently added 'github.com' (RSA) to the list of known hosts.
+
+
+
+这个警告只会出现一次，后面的操作就不会有任何警告了。
+
+如果你实在担心有人冒充GitHub服务器，输入yes前可以对照GitHub的RSA Key的指纹信息是否与SSH连接给出的一致。
+
+从远程库克隆
+介绍：有时我们开发中先从远程仓库中将仓库克隆到本地进行开发，需要使用命令git clone从远程仓库克隆一个本地库
+
+ git clone git@github.com:username/仓库地址.git
+
+
+
+注意：克隆的本地仓库，开发后修改远程库，还需要使用git remote add 关联远程仓库。使用git push将本地仓库推送到远程。
